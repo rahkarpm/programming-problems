@@ -120,9 +120,4 @@ public class Sorter {
             arrInput[nElemIdx2] = temp;
         }
     }
-
-    public enum SortOrder {
-        ASC,
-        DESC
-    }
 }
