@@ -3,56 +3,126 @@ package training;
 public class Sorter {
 
     public static <T extends Comparable<T>> void doBubbleSort(T[] arrInput) {
-        doBubbleSort(arrInput, SortOrder.ASC);
+        if (arrInput == null)
+            return;
+
+        int nArrLength = arrInput.length;
+
+        if(nArrLength < 2)
+            return;
+
+        boolean bSwapsInPass = false;
+        for(int nPassIdx= 0; nPassIdx < nArrLength; nPassIdx++){
+            bSwapsInPass = false;
+            for(int nElemIdx= 0; nElemIdx < nArrLength-nPassIdx-1; nElemIdx++){
+                if((arrInput[nElemIdx].compareTo(arrInput[nElemIdx+1])) > 0){
+                    swap(arrInput, nElemIdx, nElemIdx+1);
+                    bSwapsInPass = true;
+                }
+            }
+            if(!bSwapsInPass)
+                break;
+        }
     }
 
     public static <T extends Comparable<T>> void doSelectionSort(T[] arrInput) {
-        doSelectionSort(arrInput, SortOrder.ASC);
+        if (arrInput == null)
+            return;
+
+        int nArrLength = arrInput.length;
+
+        if(nArrLength < 2)
+            return;
+
+        int nSwapIdx = 0;
+        for (int nCurrIdx = 0; nCurrIdx < nArrLength-1; nCurrIdx++)
+        {
+            nSwapIdx = nCurrIdx;
+            for (int nElemIdx = nCurrIdx+1; nElemIdx < nArrLength; nElemIdx++){
+                if((arrInput[nSwapIdx].compareTo(arrInput[nElemIdx])) > 0 ){
+                    nSwapIdx = nElemIdx;
+                }
+            }
+            swap(arrInput, nSwapIdx, nCurrIdx);
+        }
     }
 
     public static <T extends Comparable<T>> void doInsertionSort(T[] arrInput) {
-        doInsertionSort(arrInput, SortOrder.ASC);
+        if (arrInput == null)
+            return;
+
+        int nArrLength = arrInput.length;
+
+        if(nArrLength < 2)
+            return;
+
+        for (int nCurrIdx = 1; nCurrIdx < nArrLength; nCurrIdx++) {
+            for(int nElemIdx = nCurrIdx ; nElemIdx > 0 ; nElemIdx--){
+                if((arrInput[nElemIdx-1].compareTo(arrInput[nElemIdx])) > 0){
+                    swap(arrInput, nElemIdx, nElemIdx-1);
+                }else{
+                    break;
+                }
+            }
+        }
     }
 
     public static <T extends Comparable<T>> void doQuickSort(T[] arrInput) {
-        doQuickSort(arrInput, SortOrder.ASC);
+        if (arrInput == null)
+            return;
+
+        int nArrLength = arrInput.length;
+
+        if(nArrLength < 2)
+            return;
+
+        quickSort(arrInput,0, nArrLength -1);
     }
 
-    public static <T extends Comparable<T>> void doBubbleSort(T[] arrInput, SortOrder sortOrder) {
-        sort(arrInput, sortOrder, SortAlgo.BUBBLE);
+    private static <T extends Comparable<T>> void quickSort(T[] arrInput, int nLow, int nHigh) {
+
+        if(nLow >= nHigh)
+            return;
+
+        int nPivotIdx = partition(arrInput, nLow, nHigh);
+        quickSort(arrInput, nLow, nPivotIdx-1);
+        quickSort(arrInput, nPivotIdx+1, nHigh);
+
     }
 
-    public static <T extends Comparable<T>> void doSelectionSort(T[] arrInput, SortOrder sortOrder) {
-        sort(arrInput, sortOrder, SortAlgo.SELECTION);
-    }
+    private static <T extends Comparable<T>> int partition(T[] arrInput, int nLow, int nHigh) {
+        T pivot = arrInput[nHigh];
+        int nPivotIdx = nHigh;
 
-    public static <T extends Comparable<T>> void doInsertionSort(T[] arrInput, SortOrder sortOrder) {
-        sort(arrInput, sortOrder, SortAlgo.INSERTION);
-    }
+        while(true){
+            while(nLow <= nHigh && (arrInput[nLow].compareTo(pivot) <= 0))
+                nLow++;
 
-    public static <T extends Comparable<T>> void doQuickSort(T[] arrInput, SortOrder sortOrder) {
-        sort(arrInput, sortOrder, SortAlgo.QUICK);
-    }
+            while(nHigh >= nLow && (arrInput[nHigh].compareTo(pivot) >= 0))
+                nHigh--;
 
-    private static <T extends Comparable<T>> void sort(T[] arrInput, SortOrder sortOrder, SortAlgo sortAlgo ){
-
-        AbstractSort sorter = null;
-        switch (sortAlgo) {
-            case BUBBLE:
-                sorter = new BubbleSort(sortOrder);
+            if(nLow > nHigh)
                 break;
-            case SELECTION:
-                sorter = new SelectionSort(sortOrder);
-                break;
-            case INSERTION:
-                sorter = new InsertionSort(sortOrder);
-                break;
-            case QUICK:
-                sorter = new QuickSort(sortOrder);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + sortAlgo);
+
+            swap(arrInput, nLow, nHigh);
         }
-        sorter.sort(arrInput);
+        if(nLow < nPivotIdx){
+            swap(arrInput, nLow, nPivotIdx);
+            nPivotIdx = nLow;
+        }
+        return nPivotIdx;
+    }
+
+    private static <T extends Comparable<T>> void swap(T[] arrInput, int nElemIdx1, int nElemIdx2) {
+        if(nElemIdx1 != nElemIdx2){
+            T temp = arrInput[nElemIdx1];
+            arrInput[nElemIdx1] = arrInput[nElemIdx2];
+            arrInput[nElemIdx2] = temp;
+        }
+    }
+
+    public enum SortOrder {
+        ASC,
+        DESC
     }
 }
