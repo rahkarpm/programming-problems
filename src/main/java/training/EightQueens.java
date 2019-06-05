@@ -35,7 +35,8 @@ public class EightQueens {
             return false;
         int insertIndex = progressivePositionsInRow.size();
         for (int i = 0; i < progressivePositionsInRow.size(); i++) {
-            if (progressivePositionsInRow.get(i) + (insertIndex - i) == newColumn || progressivePositionsInRow.get(i) - (insertIndex - i) == newColumn)
+            if (progressivePositionsInRow.get(i) + (insertIndex - i) == newColumn
+                    || progressivePositionsInRow.get(i) - (insertIndex - i) == newColumn)
                 return false;
         }
         return true;
