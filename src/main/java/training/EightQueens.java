@@ -5,41 +5,62 @@ import java.util.List;
 
 public class EightQueens {
 
-    private int nSolution;
+
     private static final int BOARD_SIZE = 8;
 
-    public int solve(){
-        solve(new ArrayList<>(), 0);
-        return nSolution;
+    private int m_nSolution;
+    private int[] m_positionsInRow;
+
+    public EightQueens(){
+        m_nSolution = 0;
+        m_positionsInRow = new int[BOARD_SIZE];
     }
 
-    private void solve(List<Integer> positionsInRow, int rowIndex){
+    public int solve(){
+        solve( 0);
+        return m_nSolution;
+    }
+
+
+    private void solve(int rowIndex){
         if (rowIndex == BOARD_SIZE) {
-            System.out.println(positionsInRow);
-            nSolution++;
+            displayPosition();
+            m_nSolution++;
             return;
         }
 
         for (int columnIdx = 0; columnIdx < BOARD_SIZE; columnIdx++) {
-            if (checkConstraint(positionsInRow, columnIdx)) {
-                positionsInRow.add(columnIdx);
-                solve(positionsInRow, rowIndex + 1);
-                positionsInRow.remove(positionsInRow.size() - 1);
+            if (checkConstraint(rowIndex, columnIdx)) {
+                m_positionsInRow[rowIndex] = columnIdx;
+                solve( rowIndex + 1);
             }
         }
 
     }
 
-    private boolean checkConstraint(List<Integer> progressivePositionsInRow, int newColumn) {
-        if (progressivePositionsInRow.contains(newColumn))
-            return false;
-        int insertIndex = progressivePositionsInRow.size();
-        for (int i = 0; i < progressivePositionsInRow.size(); i++) {
-            if (progressivePositionsInRow.get(i) + (insertIndex - i) == newColumn
-                    || progressivePositionsInRow.get(i) - (insertIndex - i) == newColumn)
-                return false;
+    private void displayPosition() {
+
+        for (int i = 0; i < BOARD_SIZE; i++){
+            System.out.print(m_positionsInRow[i]);
         }
-        return true;
+        System.out.println();
+    }
+
+    private boolean checkConstraint(int rowIndex, int newColumn) {
+
+        if (rowIndex == 0)
+            return (true);
+
+        for (int i = 0; i < rowIndex; i++){
+            if (m_positionsInRow[i] == newColumn)
+                return (false);
+
+            if ((rowIndex - i == newColumn - m_positionsInRow[i]) || (rowIndex - i == m_positionsInRow[i] - newColumn))
+                return (false);
+
+        }
+
+        return (true);
     }
 
     public static void main(String[] args) {
