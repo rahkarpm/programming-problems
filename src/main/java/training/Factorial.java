@@ -5,7 +5,7 @@ package training;
  * Factorial Utility class,
  * provides methods to compute factorial of a <strong>non-negative number recursively and non-recursively</strong>.
  *
- * <p><strong>Result scope is bounded by <tt>Integer.MAX_VALUE</tt>,
+ * <p>Result scope is bounded by <tt>Integer.MAX_VALUE</tt>,
  * any number whose factorial crosses given result boundary is not accepted. </strong></p>
  *
  * @author Prakhar
