@@ -18,10 +18,12 @@ public class Factorial {
     private static int calculateMAXAllowedInteger() {
         int intLimit = Integer.MAX_VALUE;
         int maxAllowedInt = 1;
+        
         while (intLimit > 0) {
             maxAllowedInt++;
             intLimit = intLimit / maxAllowedInt;
         }
+        
         return maxAllowedInt - 1;
     }
 
@@ -36,15 +38,18 @@ public class Factorial {
      * @throws IllegalArgumentException - for <tt> number < 0 </tt>  or <tt>@return</tt> is too large for <tt>int</tt>
      */
     public int factorial(int number) throws IllegalArgumentException {
+        
         if (number < 0 || number > MAX_ALLOWED_NUMBER) {
             throw new IllegalArgumentException(
                     "Number should be greater or equal to 0 and less or equal to  " + MAX_ALLOWED_NUMBER +
                             " but found : "+number);
         }
+        
         int factorial = 1;
-        while (number > 1) {
-            factorial = factorial * number--;
+        for(;number>1;number--){
+            factorial *= number;
         }
+        
         return factorial;
     }
 
@@ -59,15 +64,18 @@ public class Factorial {
      * @throws IllegalArgumentException - for <tt> number < 0 </tt>  or <tt>@return</tt> is too large for <tt>int</tt>
      */
     public int factorialUsingRecursion(final int number) throws IllegalArgumentException {
+        
         if (number < 0 || number > MAX_ALLOWED_NUMBER) {
             throw new IllegalArgumentException(
                     "Number should be greater or equal to 0 and less or equal to  " + MAX_ALLOWED_NUMBER +
                             " but found : "+number);
         }
+        
         //Factorial of 0 is always 1.
         if (number == 0) {
             return 1;
         }
+        
         return number * factorialUsingRecursion(number - 1);
     }
 }
